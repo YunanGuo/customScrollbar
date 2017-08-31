@@ -34,7 +34,7 @@
                 scrollbarDivColor: '',  // 模拟滚动条的颜色
                 scrollbarDivRadius: '',  // 模拟滚动条的圆角
             };
-        scrollbar.init(data);
+        scrollbar(data);
     </script>
 ```
 

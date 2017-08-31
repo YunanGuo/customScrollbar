@@ -17,6 +17,15 @@
 			/*overflow-y: hidden; */
 			/*position: relative;*/
 		}
+		#scrollbar-box1{
+			margin: 100px auto;
+			border: 1px solid #bdbdbd;
+			height: 400px;
+			width: 300px;
+			/*overflow-x: hidden;*/
+			/*overflow-y: hidden; */
+			/*position: relative;*/
+		}
 		#scrollbar-content{
 			/*position: absolute;*/
 			/*width: 100%;*/
@@ -26,7 +35,6 @@
 		}
 		li{
 			height: 80px;
-			line-height: 80px;
 			width: 100%;
 			text-align: center;
 			border-bottom: 1px solid #bdbdbd;
@@ -54,6 +62,21 @@
 			</ul>
 		</div>
 	</div>
+	<div id="scrollbar-box1">
+		<div id="scrollbar-content1">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>7</li>
+				<li>8</li>
+				<li>9</li>
+			</ul>
+		</div>
+	</div>
 	<script>
 		var data = {
 				scrollbarBoxId: 'scrollbar-box',
@@ -63,7 +86,16 @@
 				scrollbarDivColor: '',	// 模拟滚动条的颜色
 				scrollbarDivRadius: '',	 // 模拟滚动条的圆角
 			};
-		scrollbar.init(data);
+		scrollbar(data);
+		var data1 = {
+				scrollbarBoxId: 'scrollbar-box1',
+				scrollbarContentId: 'scrollbar-content1',
+				scrollbarDivId: 'scrollbarDiv1',	 // 模拟滚动条的id
+				scrollbarDivWidth: '',	// 模拟滚动条的宽
+				scrollbarDivColor: '',	// 模拟滚动条的颜色
+				scrollbarDivRadius: '',	 // 模拟滚动条的圆角
+			};
+		scrollbar(data1);
 	</script>
 </body>
 </html>

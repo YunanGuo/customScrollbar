@@ -1,36 +1,40 @@
-(function(){
-	var scrollbar = {
-		scrollbarBox: '',
-		scrollbarContent: '',
-		scrollbarDiv: '',	//模拟的滚动条
-		dataValue: '',
-		scrollbarDivHeight: '',
-		downPageY: '',
-		movePageY: '',
-		changePageY: '',
-		is_mouse_down: false,
-		init : function(data){
-			this.dataValue = data;
+(function(window){
+	var scrollbar = function(data){
+		return new Customscrollbar(data).init();
+	};
+	var Customscrollbar = function(data){
+		this.scrollbarBox = document.querySelector('#'+data.scrollbarBoxId);
+		this.scrollbarContent = document.querySelector('#'+data.scrollbarContent);
+		this.scrollbarDiv = document.querySelector('#'+data.scrollbarDiv);
+		this.data = data;
+		this.scrollbarContentHeight = '';
+		this.downPageY = '';
+		this.movePageY = '';
+		this.changePageY = '';
+		this.is_mouse_down = false;
+	};
+	Customscrollbar.prototype = {
+		init : function(){
 			// 获取dom
-			this.dom(data);
+			this.dom();
 			// 设置样式
-			this.css(data);
+			this.css();
 			// 监听事件
 			this.listener();
 		},
-		dom: function(data){
+		dom: function(){
 			// 获取dom
-			if(data.scrollbarBoxId&&data.scrollbarContentId){
-				this.scrollbarBox = document.querySelector('#'+data.scrollbarBoxId);
-				this.scrollbarContent = document.querySelector('#'+data.scrollbarContentId);
+			if(this.data.scrollbarBoxId&&this.data.scrollbarContentId){
+				this.scrollbarBox = document.querySelector('#'+this.data.scrollbarBoxId);
+				this.scrollbarContent = document.querySelector('#'+this.data.scrollbarContentId);
 			}else{
 				this.scrollbarBox = document.querySelector('#scrollbar-box');
 				this.scrollbarContent = document.querySelector('#scrollbar-content');
 			};
 			// 创建模拟滚动条
-			if(data.scrollbarDivClass){
+			if(this.data.scrollbarDivClass){
 				this.scrollbarDiv = document.createElement('div');
-				this.scrollbarDiv.setAttribute('id', data.scrollbarDivId);
+				this.scrollbarDiv.setAttribute('id', this.data.scrollbarDivId);
 				this.scrollbarBox.appendChild(this.scrollbarDiv);
 			}else{
 				this.scrollbarDiv = document.createElement('div');
@@ -38,7 +42,7 @@
 				this.scrollbarBox.appendChild(this.scrollbarDiv);
 			}
 		},
-		css : function(data){
+		css : function(){
 			// 父子元素定位
 			if(this.scrollbarBox.style.position != 'relative'&&this.scrollbarBox.style.position != 'absolute'){
 				this.scrollbarBox.style.position = 'relative';
@@ -56,8 +60,8 @@
 			var scrollbarDivHeight = scrollbarBoxHeight*scrollbarBoxHeight/this.scrollbarContentHeight;
 			this.scrollbarDiv.style.height = scrollbarDivHeight + 'px';
 			// 宽
-			if(data.scrollbarDivWidth){
-				this.scrollbarDiv.style.width = data.scrollbarDivWidth + 'px';
+			if(this.data.scrollbarDivWidth){
+				this.scrollbarDiv.style.width = this.data.scrollbarDivWidth + 'px';
 			}else{
 				this.scrollbarDiv.style.width = '8px';
 			};
@@ -66,14 +70,14 @@
 			this.scrollbarDiv.style.top = 0;
 			this.scrollbarDiv.style.right = 0;
 			// 颜色
-			if(data.scrollbarDivColor){
-				this.scrollbarDiv.style.background = data.scrollbarDivColor;
+			if(this.data.scrollbarDivColor){
+				this.scrollbarDiv.style.background = this.data.scrollbarDivColor;
 			}else{
 				this.scrollbarDiv.style.background = '#cccccc';
 			};
 			// 圆角
-			if(data.scrollbarDivRadius){
-				this.scrollbarDiv.style.borderRadius = data.scrollbarDivRadius + 'px';
+			if(this.data.scrollbarDivRadius){
+				this.scrollbarDiv.style.borderRadius = this.data.scrollbarDivRadius + 'px';
 			}else{
 				this.scrollbarDiv.style.borderRadius = 0;
 			};
@@ -81,85 +85,87 @@
 			this.scrollbarDiv.style.display = 'none';
 		},
 		listener: function(){
-			this.scrollbarContent.addEventListener('mouseover', this.onMouseOver, false);
-			this.scrollbarContent.addEventListener('mouseleave', this.onMouseLeave, false);
-			this.scrollbarContent.addEventListener('mousewheel', this.onMouseWheel, false);
-			this.scrollbarDiv.addEventListener('mouseover', this.onMouseOver, false);
-			this.scrollbarDiv.addEventListener('mouseleave', this.onMouseLeave, false);
-			this.scrollbarDiv.addEventListener('mousewheel', this.onMouseWheel, false);
-			this.scrollbarDiv.addEventListener('mousedown', this.onMouseDown, false);
-			document.documentElement.addEventListener('mouseup', this.documentMouseUp, false);
-			document.documentElement.addEventListener('click', this.documentClick, false);
-			document.documentElement.addEventListener('mousemove', this.documentMouseMove, false);
+			this.scrollbarContent.addEventListener('mouseover', this.onMouseOver.bind(this), false);
+			this.scrollbarContent.addEventListener('mouseleave', this.onMouseLeave.bind(this), false);
+			this.scrollbarContent.addEventListener('mousewheel', this.onMouseWheel.bind(this), false);
+			this.scrollbarDiv.addEventListener('mouseover', this.onMouseOver.bind(this), false);
+			this.scrollbarDiv.addEventListener('mouseleave', this.onMouseLeave.bind(this), false);
+			this.scrollbarDiv.addEventListener('mousewheel', this.onMouseWheel.bind(this), false);
+			this.scrollbarDiv.addEventListener('mousedown', this.onMouseDown.bind(this), false);
+			document.documentElement.addEventListener('mouseup', this.documentMouseUp.bind(this), false);
+			document.documentElement.addEventListener('click', this.documentClick.bind(this), false);
+			document.documentElement.addEventListener('mousemove', this.documentMouseMove.bind(this), false);
 		},
 		documentMouseUp: function(){
-			if(scrollbar.is_mouse_down){
-				scrollbar.is_mouse_down = false;
+			if(this.is_mouse_down){
+				this.is_mouse_down = false;
 			};
 		},
 		documentClick: function(){
-			if(scrollbar.is_mouse_down){
-				scrollbar.is_mouse_down = false;
+			if(this.is_mouse_down){
+				this.is_mouse_down = false;
 			}
 		},
 		documentMouseMove: function(e){
 			// 阻止内容被选中
 			e.preventDefault();
-			if(scrollbar.is_mouse_down){
-				scrollbar.scrollbarDiv.style.display = 'block';
-				scrollbar.movePageY = e.pageY;
-				scrollbar.changePageY = scrollbar.movePageY - scrollbar.downPageY;
-				scrollbar.downPageY = scrollbar.movePageY;
-				var changeValue = (scrollbar.scrollbarContent.offsetHeight-scrollbar.scrollbarBox.offsetHeight)*scrollbar.changePageY/(scrollbar.scrollbarBox.offsetHeight-scrollbar.scrollbarDiv.offsetHeight);
-				scrollbar.scrollbarDiv.style.top = (scrollbar.scrollbarDiv.offsetTop + scrollbar.changePageY) + 'px';
-				scrollbar.scrollbarContent.style.top = (scrollbar.scrollbarContent.offsetTop - changeValue) + 'px';
-				scrollbar.reCss();
+			if(this.is_mouse_down){
+				this.scrollbarDiv.style.display = 'block';
+				this.movePageY = e.pageY;
+				this.changePageY = this.movePageY - this.downPageY;
+				this.downPageY = this.movePageY;
+				var changeValue = (this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight)*this.changePageY/(this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight);
+				this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop + this.changePageY) + 'px';
+				this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop - changeValue) + 'px';
+				this.reCss();
 			}
 		},
 		onMouseDown: function(e){
-			scrollbar.is_mouse_down = true;
-			scrollbar.downPageY = e.pageY;
+			this.is_mouse_down = true;
+			this.downPageY = e.pageY;
 		},
 		onMouseOver: function(){
-			if(!scrollbar.scrollbarContentHeight){
-				scrollbar.css(scrollbar.dataValue);
+			if(!this.scrollbarContentHeight){
+				this.css(this.dataValue);
 			};
-			scrollbar.scrollbarDiv.style.display = 'block';
+			this.scrollbarDiv.style.display = 'block';
 		},
 		onMouseLeave: function(){
-			scrollbar.scrollbarDiv.style.display = 'none';
+			this.scrollbarDiv.style.display = 'none';
 		},
 		onMouseWheel: function(e){
-			var sudu = (scrollbar.scrollbarContent.offsetHeight-scrollbar.scrollbarBox.offsetHeight)*e.wheelDelta/(scrollbar.scrollbarBox.offsetHeight-scrollbar.scrollbarDiv.offsetHeight);
-			if(scrollbar.scrollbarDiv.offsetTop>0&&e.wheelDelta>0){
-				scrollbar.scrollbarDiv.style.top = (scrollbar.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
-				scrollbar.scrollbarContent.style.top = (scrollbar.scrollbarContent.offsetTop + sudu/3) + 'px';
-				scrollbar.reCss();
-			}else if(scrollbar.scrollbarDiv.offsetTop<scrollbar.scrollbarBox.offsetHeight-scrollbar.scrollbarDiv.offsetHeight&&e.wheelDelta<0){
-				scrollbar.scrollbarDiv.style.top = (scrollbar.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
-				scrollbar.scrollbarContent.style.top = (scrollbar.scrollbarContent.offsetTop + sudu/3) + 'px';
-				scrollbar.reCss();
+			// 阻止body滚动条滚动
+			e.preventDefault();
+			var sudu = (this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight)*e.wheelDelta/(this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight);
+			if(this.scrollbarDiv.offsetTop>0&&e.wheelDelta>0){
+				this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+				this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
+				this.reCss();
+			}else if(this.scrollbarDiv.offsetTop<this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight&&e.wheelDelta<0){
+				this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+				this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
+				this.reCss();
 			};
 		},
 		reCss: function(){
-			if(scrollbar.scrollbarDiv.offsetTop<0){
-				scrollbar.scrollbarDiv.style.top = 0;
+			if(this.scrollbarDiv.offsetTop<0){
+				this.scrollbarDiv.style.top = 0;
 			};
-			if(scrollbar.scrollbarDiv.offsetTop>scrollbar.scrollbarBox.offsetHeight-scrollbar.scrollbarDiv.offsetHeight){
-				scrollbar.scrollbarDiv.style.top = scrollbar.scrollbarBox.offsetHeight-scrollbar.scrollbarDiv.offsetHeight + 'px';
+			if(this.scrollbarDiv.offsetTop>this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight){
+				this.scrollbarDiv.style.top = this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight + 'px';
 			};
-			if(scrollbar.scrollbarContent.offsetTop>0){
-				scrollbar.scrollbarContent.style.top = 0;
+			if(this.scrollbarContent.offsetTop>0){
+				this.scrollbarContent.style.top = 0;
 			};
-			if(-scrollbar.scrollbarContent.offsetTop>scrollbar.scrollbarContent.offsetHeight-scrollbar.scrollbarBox.offsetHeight){
-				scrollbar.scrollbarContent.style.top = -(scrollbar.scrollbarContent.offsetHeight-scrollbar.scrollbarBox.offsetHeight) + 'px';
+			if(-this.scrollbarContent.offsetTop>this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight){
+				this.scrollbarContent.style.top = -(this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight) + 'px';
 			};
 			console.log('reCss');
 		}
 	};
 	window.scrollbar = scrollbar;
-	return scrollbar;
-})();
+})(window);
+// 用法
 // var data = {
 // 		scrollbarBoxId: 'scrollbar-box',
 // 		scrollbarContentId: 'scrollbar-content',
@@ -168,4 +174,7 @@
 // 		scrollbarDivColor: '',	// 模拟滚动条的颜色
 // 		scrollbarDivRadius: '',	 // 模拟滚动条的圆角
 // 	};
-// scrollbar.init(data);
+// scrollbar(data);
+
+
+

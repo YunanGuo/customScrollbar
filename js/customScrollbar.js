@@ -32,7 +32,7 @@
 				this.scrollbarContent = document.querySelector('#scrollbar-content');
 			};
 			// 创建模拟滚动条
-			if(this.data.scrollbarDivClass){
+			if(this.data.scrollbarDivId){
 				this.scrollbarDiv = document.createElement('div');
 				this.scrollbarDiv.setAttribute('id', this.data.scrollbarDivId);
 				this.scrollbarBox.appendChild(this.scrollbarDiv);
@@ -57,8 +57,12 @@
 			var scrollbarBoxHeight = this.scrollbarBox.offsetHeight;
 			this.scrollbarContentHeight = this.scrollbarContent.offsetHeight;
 			// 高
-			var scrollbarDivHeight = scrollbarBoxHeight*scrollbarBoxHeight/this.scrollbarContentHeight;
-			this.scrollbarDiv.style.height = scrollbarDivHeight + 'px';
+			if(this.scrollbarContentHeight>scrollbarBoxHeight){
+				var scrollbarDivHeight = scrollbarBoxHeight*scrollbarBoxHeight/this.scrollbarContentHeight;
+				this.scrollbarDiv.style.height = scrollbarDivHeight + 'px';
+			}else{
+				this.scrollbarDiv.style.height = 0;
+			}
 			// 宽
 			if(this.data.scrollbarDivWidth){
 				this.scrollbarDiv.style.width = this.data.scrollbarDivWidth + 'px';
@@ -175,6 +179,3 @@
 // 		scrollbarDivRadius: '',	 // 模拟滚动条的圆角
 // 	};
 // scrollbar(data);
-
-
-

@@ -140,16 +140,18 @@
 		onMouseWheel: function(e){
 			// 阻止body滚动条滚动
 			e.preventDefault();
-			var sudu = (this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight)*e.wheelDelta/(this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight);
-			if(this.scrollbarDiv.offsetTop>0&&e.wheelDelta>0){
-				this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
-				this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
-				this.reCss();
-			}else if(this.scrollbarDiv.offsetTop<this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight&&e.wheelDelta<0){
-				this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
-				this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
-				this.reCss();
-			};
+			if(this.scrollbarContent.offsetHeight > this.scrollbarBox.offsetHeight){
+				var sudu = (this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight)*e.wheelDelta/(this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight);
+				if(this.scrollbarDiv.offsetTop>0&&e.wheelDelta>0){
+					this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
+					this.reCss();
+				}else if(this.scrollbarDiv.offsetTop<this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight&&e.wheelDelta<0){
+					this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
+					this.reCss();
+				};
+			}
 		},
 		reCss: function(){
 			if(this.scrollbarDiv.offsetTop<0){

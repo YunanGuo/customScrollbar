@@ -129,9 +129,7 @@
 			this.downPageY = e.pageY;
 		},
 		onMouseOver: function(){
-			if(!this.scrollbarContentHeight){
-				this.css(this.dataValue);
-			};
+			this.css(this.dataValue);
 			this.scrollbarDiv.style.display = 'block';
 		},
 		onMouseLeave: function(){

@@ -8,6 +8,7 @@
 		this.scrollbarDiv = document.querySelector('#'+data.scrollbarDiv);
 		this.data = data;
 		this.scrollbarContentHeight = '';
+		this.scrollbarDivTop = '';
 		this.downPageY = '';
 		this.movePageY = '';
 		this.changePageY = '';
@@ -56,6 +57,7 @@
 			// 自定义的滚动条样式
 			var scrollbarBoxHeight = this.scrollbarBox.offsetHeight;
 			this.scrollbarContentHeight = this.scrollbarContent.offsetHeight;
+			console.log(this.scrollbarContentHeight);
 			// 高
 			if(this.scrollbarContentHeight>scrollbarBoxHeight){
 				var scrollbarDivHeight = scrollbarBoxHeight*scrollbarBoxHeight/this.scrollbarContentHeight;
@@ -71,7 +73,11 @@
 			};
 			// 定位
 			this.scrollbarDiv.style.position = 'absolute';
-			this.scrollbarDiv.style.top = 0;
+			if(this.scrollbarDivTop){
+				this.scrollbarDiv.style.top = this.scrollbarDivTop;
+			}else{
+				this.scrollbarDiv.style.top = 0;
+			};
 			this.scrollbarDiv.style.right = 0;
 			// 颜色
 			if(this.data.scrollbarDivColor){
@@ -141,11 +147,13 @@
 			if(this.scrollbarContent.offsetHeight > this.scrollbarBox.offsetHeight){
 				var sudu = (this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight)*e.wheelDelta/(this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight);
 				if(this.scrollbarDiv.offsetTop>0&&e.wheelDelta>0){
-					this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+					this.scrollbarDivTop = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+					this.scrollbarDiv.style.top = this.scrollbarDivTop;
 					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
 					this.reCss();
 				}else if(this.scrollbarDiv.offsetTop<this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight&&e.wheelDelta<0){
-					this.scrollbarDiv.style.top = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+					this.scrollbarDivTop = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+					this.scrollbarDiv.style.top = this.scrollbarDivTop;
 					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
 					this.reCss();
 				};
@@ -153,10 +161,12 @@
 		},
 		reCss: function(){
 			if(this.scrollbarDiv.offsetTop<0){
-				this.scrollbarDiv.style.top = 0;
+				this.scrollbarDivTop = 0;
+				this.scrollbarDiv.style.top = this.scrollbarDivTop;
 			};
 			if(this.scrollbarDiv.offsetTop>this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight){
-				this.scrollbarDiv.style.top = this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight + 'px';
+				this.scrollbarDivTop = this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight + 'px';
+				this.scrollbarDiv.style.top = this.scrollbarDivTop;
 			};
 			if(this.scrollbarContent.offsetTop>0){
 				this.scrollbarContent.style.top = 0;

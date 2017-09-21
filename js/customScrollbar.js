@@ -13,6 +13,7 @@
 		this.movePageY = '';
 		this.changePageY = '';
 		this.is_mouse_down = false;
+		self.speed = data.speed?data.speed:2;
 	};
 	Customscrollbar.prototype = {
 		init : function(){
@@ -135,7 +136,8 @@
 			this.downPageY = e.pageY;
 		},
 		onMouseOver: function(){
-			this.css(this.dataValue);
+			// 重置滚动条样式
+			this.reScrollDivCss();
 			this.scrollbarDiv.style.display = 'block';
 		},
 		onMouseLeave: function(){
@@ -146,17 +148,28 @@
 			e.preventDefault();
 			if(this.scrollbarContent.offsetHeight > this.scrollbarBox.offsetHeight){
 				var sudu = (this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight)*e.wheelDelta/(this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight);
+				var scrollbarContent_s = self.speed*e.wheelDelta;
 				if(this.scrollbarDiv.offsetTop>0&&e.wheelDelta>0){
-					this.scrollbarDivTop = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+					var scrollbarDiv_s = -this.scrollbarDiv.offsetTop/this.scrollbarContent.offsetTop*scrollbarContent_s;
+					this.scrollbarDivTop = (this.scrollbarDiv.offsetTop - scrollbarDiv_s/3) + 'px';
 					this.scrollbarDiv.style.top = this.scrollbarDivTop;
-					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
+					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + scrollbarContent_s/3) + 'px';
 					this.reCss();
-				}else if(this.scrollbarDiv.offsetTop<this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight&&e.wheelDelta<0){
-					this.scrollbarDivTop = (this.scrollbarDiv.offsetTop - e.wheelDelta/3) + 'px';
+				}else if(this.scrollbarDiv.offsetTop<=this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight&&e.wheelDelta<0){
+					var scrollbarDiv_s = (this.scrollbarBox.offsetHeight-this.scrollbarDiv.offsetHeight)/(this.scrollbarContent.offsetHeight-this.scrollbarBox.offsetHeight)*scrollbarContent_s;
+					this.scrollbarDivTop = (this.scrollbarDiv.offsetTop - scrollbarDiv_s/3) + 'px';
 					this.scrollbarDiv.style.top = this.scrollbarDivTop;
-					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + sudu/3) + 'px';
+					this.scrollbarContent.style.top = (this.scrollbarContent.offsetTop + scrollbarContent_s/3) + 'px';
 					this.reCss();
+					// 重置滚动条样式
+					this.reScrollDivCss();
 				};
+			}
+		},
+		reScrollDivCss: function(){
+			if(this.scrollbarContent.offsetHeight > this.scrollbarBox.offsetHeight){
+				this.scrollbarDiv.style.height = this.scrollbarBox.offsetHeight*this.scrollbarBox.offsetHeight/this.scrollbarContent.offsetHeight + 'px';
+				this.scrollbarDiv.style.top = -this.scrollbarContent.offsetTop*this.scrollbarBox.offsetHeight/this.scrollbarContent.offsetHeight + 'px';
 			}
 		},
 		reCss: function(){
@@ -187,5 +200,6 @@
 // 		scrollbarDivWidth: '',	// 模拟滚动条的宽
 // 		scrollbarDivColor: '',	// 模拟滚动条的颜色
 // 		scrollbarDivRadius: '',	 // 模拟滚动条的圆角
+// 		speed: ''  // 滚动速度
 // 	};
 // scrollbar(data);

@@ -1,101 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>div模拟滚动条</title>
-	<style>
-		*{
-			margin: 0;
-			padding: 0;
-		}
-		#scrollbar-box{
-			margin: 100px auto;
-			border: 1px solid #bdbdbd;
-			height: 400px;
-			width: 300px;
-			/*overflow-x: hidden;*/
-			/*overflow-y: hidden; */
-			/*position: relative;*/
-		}
-		#scrollbar-box1{
-			margin: 100px auto;
-			border: 1px solid #bdbdbd;
-			height: 400px;
-			width: 300px;
-			/*overflow-x: hidden;*/
-			/*overflow-y: hidden; */
-			/*position: relative;*/
-		}
-		#scrollbar-content{
-			/*position: absolute;*/
-			/*width: 100%;*/
-		}
-		ul,li{
-			list-style: none;
-		}
-		li{
-			height: 80px;
-			width: 100%;
-			text-align: center;
-			border-bottom: 1px solid #bdbdbd;
-			background: orange;
-		}
-		li:nth-child(even){
-			background: red;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #container {
+            height: 400px;
+            width: 200px;
+            margin: auto;
+            border: 1px solid red;
+            position: relative;
+        }
+
+        #scrollbar-box {
+            height: 100%;
+            width: 100%;
+        }
+        
+        #scrollbar-box::-webkit-scrollbar
+        {
+          height: 0px;
+          width: 0px;
+        }
+
+        #scrollbar-content {
+            height: 4000px;
+            width: 400px;
+            background: blue;
+        }
+    </style>
+    <script src="../js/customScrollbar.js"></script>
 </head>
-<script src="../js/customScrollbar.js"></script>
+
 <body>
-	<div id="scrollbar-box">
-		<div id="scrollbar-content">
-			<ul>
-				<li>1</li>
-				<li>2</li>
-				<li>3</li>
-				<li>4</li>
-				<li>5</li>
-				<li>6</li>
-				<li>7</li>
-				<li>8</li>
-				<li>9</li>
-			</ul>
-		</div>
-	</div>
-	<div id="scrollbar-box1">
-		<div id="scrollbar-content1">
-			<ul>
-				<li>1</li>
-				<li>2</li>
-				<li>3</li>
-				<li>4</li>
-				<li>5</li>
-				<li>6</li>
-				<li>7</li>
-				<li>8</li>
-				<li>9</li>
-			</ul>
-		</div>
-	</div>
-	<script>
-		var data = {
-				scrollbarBoxId: 'scrollbar-box',
-				scrollbarContentId: 'scrollbar-content',
-				scrollbarDivId: 'scrollbarDiv',	 // 模拟滚动条的id
-				scrollbarDivWidth: '',	// 模拟滚动条的宽
-				scrollbarDivColor: '',	// 模拟滚动条的颜色
-				scrollbarDivRadius: '',	 // 模拟滚动条的圆角
-			};
-		scrollbar(data);
-		var data1 = {
-				scrollbarBoxId: 'scrollbar-box1',
-				scrollbarContentId: 'scrollbar-content1',
-				scrollbarDivId: 'scrollbarDiv1',	 // 模拟滚动条的id
-				scrollbarDivWidth: '',	// 模拟滚动条的宽
-				scrollbarDivColor: '',	// 模拟滚动条的颜色
-				scrollbarDivRadius: '',	 // 模拟滚动条的圆角
-			};
-		scrollbar(data1);
-	</script>
+    <div id="container">
+        <div id="scrollbar-box">
+            <div id="scrollbar-content"></div>
+        </div>
+    </div>
+    <script>
+        scrollbar({
+            scrollbarBoxId: 'scrollbar-box',
+            scrollbarContentId: 'scrollbar-content',
+            scrollbarYId: 'scrollbar-y',  // 模拟滚动条的id
+            scrollbarXId: 'scrollbar-x',  // 模拟滚动条的id
+            scrollbarYWidth: '',  // 模拟滚动条的宽
+            scrollbarXWidth: '',  // 模拟滚动条的宽
+            scrollbarYColor: '',  // 模拟滚动条的颜色
+            scrollbarXColor: '',  // 模拟滚动条的颜色
+            scrollbarYRadius: 10,  // 模拟滚动条的圆角
+            scrollbarXRadius: 10,  // 模拟滚动条的圆角
+        })
+    </script>
 </body>
+
 </html>

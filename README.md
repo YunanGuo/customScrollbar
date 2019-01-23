@@ -10,31 +10,33 @@
 
 ### 使用方法：
 ```
-    <div id="scrollbar-box">
-        <div id="scrollbar-content">
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
-                <li>6</li>
-                <li>7</li>
-                <li>8</li>
-                <li>9</li>
-            </ul>
+    <style>
+        #scrollbar-box::-webkit-scrollbar
+        {
+            height: 0px;
+            width: 0px;
+        }
+    </style>
+
+    <div id="container">
+        <div id="scrollbar-box">
+            <div id="scrollbar-content"></div>
         </div>
     </div>
+
     <script>
-        var data = {
-                scrollbarBoxId: 'scrollbar-box',
-                scrollbarContentId: 'scrollbar-content',
-                scrollbarDivId: 'scrollbarDiv',  // 模拟滚动条的id
-                scrollbarDivWidth: '',  // 模拟滚动条的宽
-                scrollbarDivColor: '',  // 模拟滚动条的颜色
-                scrollbarDivRadius: '',  // 模拟滚动条的圆角
-            };
-        scrollbar(data);
+        scrollbar({
+            scrollbarBoxId: 'scrollbar-box',
+            scrollbarContentId: 'scrollbar-content',
+            scrollbarYId: 'scrollbar-y',  // 模拟滚动条的id
+            scrollbarXId: 'scrollbar-x',  // 模拟滚动条的id
+            scrollbarYWidth: '',  // 模拟滚动条的宽
+            scrollbarXWidth: '',  // 模拟滚动条的宽
+            scrollbarYColor: '',  // 模拟滚动条的颜色
+            scrollbarXColor: '',  // 模拟滚动条的颜色
+            scrollbarYRadius: 10,  // 模拟滚动条的圆角
+            scrollbarXRadius: 10,  // 模拟滚动条的圆角
+        })
     </script>
 ```
 
